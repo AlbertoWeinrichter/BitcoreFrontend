@@ -1,0 +1,29 @@
+FROM node:11.15.0
+
+WORKDIR /app
+
+COPY package.json ./
+
+
+ENV AWS_REGION *****
+ENV AWS_BUCKET_NAME *****
+ENV AWS_SECRET_ACCESS_KEY *****
+ENV AWS_ACCESS_KEY_ID *****
+ENV WEBSOCKET_URL *****
+ENV PUBLIC_FORUM_URL *****
+ENV AUTH0_CLIENT_SECRET *****
+ENV AUTH0_CLIENT_ID *****
+ENV AUTH0_DOMAIN *****
+ENV MEDIABASE_URL *****
+ENV BASE_URL *****
+ENV BROWSER_BASE_URL *****
+
+RUN yarn
+
+COPY . ./
+
+RUN yarn build
+
+ENV HOST 0.0.0.0
+
+CMD ["yarn", "start"]

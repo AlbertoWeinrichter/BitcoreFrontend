@@ -1,0 +1,70 @@
+version: 2
+
+jobs:
+  docker-build-development:
+    docker:
+    - image: circleci/node:10.15.0
+
+    working_directory: ~/repo
+
+    steps:
+    - checkout
+
+    - setup_remote_docker:
+        docker_layer_caching: true
+
+    - run: |
+        docker build -t aweinrichter/bitcore-frontend-staging -f docker/Dockerfile.staging .
+        docker login -u *** -p ***
+        docker push aweinrichter/bitcore-frontend-staging
+
+    - run: |
+        ssh-keyscan bitcoregaming.com >> ~/.ssh/known_hosts
+
+    - run: |
+        ssh ubuntu@bitcoregaming.com sudo docker system prune -f
+        ssh ubuntu@bitcoregaming.com 'cd Bitcore && sudo -E docker-compose pull'
+        ssh ubuntu@bitcoregaming.com 'cd Bitcore && sudo -E docker-compose up -d bitcore-frontend-staging'
+
+
+  # Commits to master branch
+  docker-build-production:
+    docker:
+    - image: circleci/python:3.6.1
+
+    working_directory: ~/repo
+
+    steps:
+    - checkout
+
+    - setup_remote_docker:
+        docker_layer_caching: true
+
+    - run: |
+        docker build -t aweinrichter/frontend-production -f docker/Dockerfile.production .
+        docker login -u *** -p ***
+        docker push aweinrichter/frontend-production
+
+    - run: |
+        ssh-keyscan bitcoregaming.com >> ~/.ssh/known_hosts
+
+    - run: |
+        ssh ubuntu@bitcoregaming.com sudo docker system prune -f
+        ssh ubuntu@bitcoregaming.com 'cd Bitcore && sudo -E docker-compose pull'
+        ssh ubuntu@bitcoregaming.com 'cd Bitcore && sudo -E docker-compose up -d frontend-production'
+
+workflows:
+  version: 2
+  build-deploy:
+    jobs:
+    - docker-build-development:
+        filters:
+          branches:
+            only:
+            - development
+
+    - docker-build-production:
+        filters:
+          branches:
+            only:
+            - master

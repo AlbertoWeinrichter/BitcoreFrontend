@@ -1,0 +1,123 @@
+.bc-container-fluid {
+  max-width: 1600px;
+  padding-right: 15px;
+  padding-left: 15px;
+  margin-right: auto;
+  margin-left: auto;
+}
+
+h1.head {
+  font-weight: 700;
+  letter-spacing: .01em;
+  margin-bottom: 30px;
+  color: #fad000;
+}
+
+.static-page-tab {
+  color: $yellow!important;
+  &.act {
+    color: black !important;
+    &:hover {
+      color: $yellow!important;
+    }
+  }
+  &:hover {
+    color: $yellow!important;
+  }
+}
+
+#__nuxt {
+  overflow-x: hidden;
+}
+.wcorners,
+.wronlnk {
+  position:relative;
+}
+.wronlnk {
+  @include curcorners(8px);
+}
+
+.wcorners .inner,
+.wronlnk {
+
+  .bc-t {
+    opacity:0;
+    position:absolute;
+    top:0;
+    left:0;
+    right:0;
+    width:100%;
+    display:block;
+    z-index:8;
+
+    &::before,
+    &::after {
+      content: '';
+      display: inline-block;
+      position: absolute;
+      top:0;
+      width: 30px;
+      height: 30px;
+    }
+
+    &::before {
+      left:0;
+      background: url('~assets/img/cr-tl.png') no-repeat;
+      background-position: top left;
+      background-size: contain;
+    }
+    &::after {
+      right:0;
+      background: url('~assets/img/cr-tr.png') no-repeat;
+      background-position: top right;
+      background-size: contain;
+    }
+  }
+  .bc-b {
+    opacity:0;
+    position:absolute;
+    bottom:0;
+    left:0;
+    right:0;
+    width:100%;
+    display:block;
+    z-index:8;
+
+    &::before,
+    &::after {
+      content: '';
+      display: inline-block;
+      position: absolute;
+      bottom:0;
+      width: 30px;
+      height: 30px;
+    }
+
+    &::before {
+      left:0;
+      background: url('~assets/img/cr-bl.png') no-repeat;
+      background-position: bottom left;
+      background-size: contain;
+    }
+    &::after {
+      right:0;
+      background: url('~assets/img/cr-br.png') no-repeat;
+      background-position: bottom right;
+      background-size: contain;
+    }
+  }
+
+  &:hover {
+    .bc-t {
+      opacity: 1;
+    }
+    .bc-b {
+      opacity: 1;
+    }
+
+  }
+}
+
+iframe {
+  max-width: 100%;
+}
